@@ -6,7 +6,7 @@ module.exports = (app) => {
     app.post('/answers', mid.check, answers.create);
 
     // Retrieve all Answers
-    app.get('/answers', mid.check, answers.findAll);
+    app.get('/answers/find/:questionId', mid.check, answers.findAll);
 
     // Retrieve a single Answer with answerId
     app.get('/answers/:answerId', mid.check, answers.findOne);

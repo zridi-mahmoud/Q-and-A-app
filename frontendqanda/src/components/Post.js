@@ -116,7 +116,10 @@ export default function Post(props) {
                     <Divider />
                     <Grid container>
                       <Grid item xs={12}>
-                        <AnswerForm questionId={1} userId={1} />
+                        <AnswerForm
+                          questionId={element._id}
+                          userId={element._userId}
+                        />
                       </Grid>
                       <Grid item container justify="flex-end">
                         <Button
@@ -132,6 +135,7 @@ export default function Post(props) {
                             localStorage.setItem(
                               "question",
                               JSON.stringify({
+                                questionId: element._id,
                                 title: element.title,
                                 content: element.content,
                               })

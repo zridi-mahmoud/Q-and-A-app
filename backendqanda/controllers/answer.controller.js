@@ -15,7 +15,6 @@ exports.create = (req, res) => {
         content: req.body.content,
         userId: req.body.userId
     });
-
     // Save Answer in the database
     answer.save()
         .then(data => {
@@ -29,7 +28,7 @@ exports.create = (req, res) => {
 
 // Retrieve and return all answers from the database.
 exports.findAll = (req, res) => {
-    Answer.find({ 'questioId': req.params.questionId })
+    Answer.find({ 'questionId': req.params.questionId })
         .then(answers => {
             res.send(answers);
         }).catch(err => {
