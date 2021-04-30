@@ -33,7 +33,7 @@ exports.sign_in = function(req, res) {
             if (bcrypt.compareSync(newUser.password, data.password)) {
                 return (
                     res.json({
-                        token: jwt.sign({ email: data.email, firstName: data.firstName, _id: data._id }, key.TOKEN_SECRET),
+                        token: jwt.sign({ email: data.email, firstName: data.firstName, _id: data._id }, key.TOKEN_SECRET, { expiresIn: 1500 }),
                         data
                     })
                 )
@@ -44,21 +44,4 @@ exports.sign_in = function(req, res) {
                 message: "Error retrieving user"
             });
         });
-};
-
-exports.loginRequired = function(req, res, next) {
-    if (req.user) {
-        next();
-    } else {
-
-        return res.status(401).json({ message: 'Unauthorized user!!' });
-    }
-};
-exports.profile = function(req, res, next) {
-    if (req.user) {
-        res.send(req.user);
-        next();
-    } else {
-        return res.status(401).json({ message: 'Invalid token' });
-    }
 };

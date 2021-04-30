@@ -160,10 +160,22 @@ exports.searchTerm = (req, res) => {
         Question.search({
             query_string: { query: req.params.term }
         }, (err, results) => {
-            res.json(results.hits.hits)
-                // if (err) return next(err);
-                // var data = results.hits.hits.map((hit) => hit);
-                // res.json(data)
+            if (err) return next(err);
+            var data = { msg: "no data" }
+            if (results.hits.hits) {
+
+                data = results.hits.hits.map((hit) => {
+                    return ({
+                        _id: hit._id,
+                        title: hit._source.title,
+                        content: hit._source.title,
+                        likes: hit._source.likes
+                    })
+                });
+            }
+            console.log(results.hits.hits[0])
+            console.log(data[0])
+            res.json(data)
         })
     }
 }
@@ -180,7 +192,6 @@ Question.createMapping((err, mapping) => {
 var stream = Question.synchronize();
 var count = 0;
 stream.on('data', (res) => {
-    console.log(res)
     count++;
 })
 stream.on('close', () => {

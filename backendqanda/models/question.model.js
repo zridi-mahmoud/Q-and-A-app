@@ -9,7 +9,7 @@ const QuestionsSchema = new mongoose.Schema({
         lat: { type: Number },
         lon: { type: Number }
     },
-    likes: Object
+    likes: { type: Object, es_indexed: true }
 });
 
 QuestionsSchema.plugin(mongoosastic, {
