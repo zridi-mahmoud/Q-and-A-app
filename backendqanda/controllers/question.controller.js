@@ -1,20 +1,5 @@
 const Question = require('../models/question.model.js');
-Question.createMapping((err, mapping) => {
-    if (err) {
-        console.log(err)
-    }
-    console.log("mapping created");
-    console.log(mapping)
-})
 
-// var stream = Question.synchronize()
-
-Question.on('es-indexed', (err, result) => {
-    if (err) {
-        console.log("error while indexing")
-    }
-    console.log('indexed to elastic search' + result);
-});
 
 // Retrieve and return all favorit questions of a user.
 exports.findFavorit = (req, res) => {
@@ -169,3 +154,47 @@ exports.delete = (req, res) => {
             });
         });
 };
+
+exports.searchTerm = (req, res) => {
+    if (req.params.term) {
+        Question.search({
+            query_string: { query: req.params.term }
+        }, (err, results) => {
+            res.json(results.hits.hits)
+                // if (err) return next(err);
+                // var data = results.hits.hits.map((hit) => hit);
+                // res.json(data)
+        })
+    }
+}
+
+//////////////////////////////////////////////
+Question.createMapping((err, mapping) => {
+    if (err) {
+        console.log(err)
+    }
+    console.log("mapping created");
+    console.log(mapping)
+})
+
+var stream = Question.synchronize();
+var count = 0;
+stream.on('data', (res) => {
+    console.log(res)
+    count++;
+})
+stream.on('close', () => {
+    console.log(count + " document indexed")
+})
+stream.on('error', (error) => {
+    console.log(error)
+})
+
+
+// Question.search({
+//     query_string: {
+//         query: "admin"
+//     }
+// }, function(err, results) {
+//     console.log(results)
+// });

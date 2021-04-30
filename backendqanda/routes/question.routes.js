@@ -22,4 +22,7 @@ module.exports = (app) => {
 
     // Delete a question with questionId
     app.delete('/questions/:questionId', mid.check, questions.delete);
+
+    //  Search by term
+    app.get('/questions/search/:term', questions.searchTerm)
 }
