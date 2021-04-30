@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Post from "../components/Post";
-import { Redirect } from "@reach/router";
 import PrimarySearchAppBar from "../components/PrimarySearchAppBar";
 
 const Questions = () => {
@@ -21,7 +20,6 @@ const Questions = () => {
     axios(config)
       .then(function (response) {
         setQuestions(response.data);
-        return <Redirect to="/questions" noThrow />;
       })
       .catch(function (error) {
         console.log(error);

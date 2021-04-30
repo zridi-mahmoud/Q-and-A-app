@@ -14,7 +14,6 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import { useHistory } from "react-router-dom";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-
 import auth from "../helpers/auth";
 
 const useStyles = makeStyles((theme) => ({
@@ -136,21 +135,18 @@ export default function PrimarySearchAppBar() {
           >
             Q&A
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <IconButton
+              onClick={() => {
+                history.push("/search");
+              }}
+              color="inherit"
+            >
+              <Badge color="secondary">
+                <SearchIcon />
+              </Badge>
+            </IconButton>
             <IconButton
               onClick={() => {
                 history.push("/favorite");

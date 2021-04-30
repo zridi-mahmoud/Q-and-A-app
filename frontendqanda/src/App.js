@@ -8,6 +8,7 @@ import Home from "./Pages/Home";
 import Questions from "./Pages/Questions";
 import AnswersContainer from "./Pages/AnswersContainer";
 import FavoriteQuestion from "./Pages/FavoritQuestions";
+import Search from "./Pages/SearchQuestion";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <ProtectedRoute exact path="/questions" component={Questions} />
           <ProtectedRoute exact path="/favorite" component={FavoriteQuestion} />
           <ProtectedRoute exact path="/home" component={Home} />
+          <ProtectedRoute exact path="/search" component={Search} />
           <ProtectedRoute exact path="/answers" component={AnswersContainer} />
           <Route path="/forbiden" component={() => "Forbiden"} />
           <Route path="*" component={() => "404 NOT FOUND"} />

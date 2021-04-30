@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Answers from "../components/Answers";
 import axios from "axios";
 import { Paper } from "@material-ui/core";
-import PostGrid from "../components/PostGrid";
 import PrimarySearchAppBar from "../components/PrimarySearchAppBar";
 import { useHistory } from "react-router-dom";
 
@@ -11,7 +10,6 @@ const AnswersContainer = () => {
   const question = JSON.parse(localStorage.getItem("question"));
   const Authorization = "Bearer " + JSON.parse(localStorage.getItem("token"));
 
-  var data = JSON.stringify({ questionId: question.questionId });
   const [loading, setLoading] = useState(true);
   const [answers, setAnswers] = useState({});
   var config = {
