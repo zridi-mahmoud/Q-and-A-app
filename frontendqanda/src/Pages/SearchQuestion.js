@@ -40,7 +40,7 @@ const SearchQuestion = () => {
     console.log(e.target.value);
     let config = {
       method: "get",
-      url: "http://localhost:5000/questions/search/" + e.target.value,
+      url: `${process.env.REACT_APP_BACKEND_URL}/questions/search/${e.target.value}`,
       headers: {
         Authorization,
       },

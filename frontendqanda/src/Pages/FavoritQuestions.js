@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Post from "../components/Post";
-import { Redirect } from "@reach/router";
 import PrimarySearchAppBar from "../components/PrimarySearchAppBar";
+import { useHistory } from "react-router-dom";
 
 const FavoriteQuestion = () => {
+  const history = useHistory();
   const [questions, setQuestions] = useState([]);
   const Authorization = "Bearer " + JSON.parse(localStorage.getItem("token"));
 
@@ -12,7 +13,7 @@ const FavoriteQuestion = () => {
     const userId = JSON.parse(localStorage.getItem("user"))._id;
     var config = {
       method: "get",
-      url: "http://localhost:5000/questions/favorite/" + userId,
+      url: `${process.env.REACT_APP_BACKEND_URL}/questions/favorite/${userId}`,
       headers: {
         Authorization,
         "Content-Type": "application/json",
@@ -22,7 +23,7 @@ const FavoriteQuestion = () => {
     axios(config)
       .then(function (response) {
         setQuestions(response.data);
-        return <Redirect to="/questions" noThrow />;
+        history.push("/questions");
       })
       .catch(function (error) {
         console.log(error);

@@ -64,7 +64,7 @@ export default function SignUp() {
     e.preventDefault();
     var config = {
       method: "post",
-      url: "http://localhost:5000/register",
+      url: `${process.env.REACT_APP_BACKEND_URL}/register`,
       data: {
         user,
       },

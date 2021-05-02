@@ -47,8 +47,7 @@ export default function Post(props) {
   const configure = (like, idPost, idUser, method) => {
     config.current = {
       method,
-      url:
-        "http://localhost:5000/questions/" + like + "/" + idPost + "/" + idUser,
+      url: `${process.env.REACT_APP_BACKEND_URL}/questions/${like}/${idPost}/${idUser}`,
       headers: {
         Authorization,
         "Content-Type": "application/json",

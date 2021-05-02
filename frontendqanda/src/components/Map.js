@@ -3,9 +3,7 @@ import MapGL, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 
-const TOKEN =
-  "pk.eyJ1Ijoiem1haG1vdWQiLCJhIjoiY2tvMDV6b25pMDd2eTJubm53bHFtZ2F3YyJ9.cBGdL-qpH6jng8iQuBOuWg";
-
+const TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 const Map = ({ loc }) => {
   const [viewport, setViewPort] = useState({
     latitude: 33.573109,

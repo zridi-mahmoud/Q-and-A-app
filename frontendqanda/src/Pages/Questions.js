@@ -10,7 +10,7 @@ const Questions = () => {
     const Authorization = "Bearer " + JSON.parse(localStorage.getItem("token"));
     var config = {
       method: "get",
-      url: "http://localhost:5000/questions/user/" + userId,
+      url: `${process.env.REACT_APP_BACKEND_URL}/questions/user/${userId}`,
       headers: {
         Authorization,
         "Content-Type": "application/json",

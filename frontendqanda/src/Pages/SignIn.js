@@ -20,9 +20,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
+      Q&A
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -63,7 +61,7 @@ export default function SignIn(props) {
     e.preventDefault();
     var config = {
       method: "post",
-      url: "http://localhost:5000/login",
+      url: `${process.env.REACT_APP_BACKEND_URL}/login`,
       data: { user },
     };
 

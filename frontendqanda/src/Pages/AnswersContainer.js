@@ -14,7 +14,7 @@ const AnswersContainer = () => {
   const [answers, setAnswers] = useState({});
   var config = {
     method: "get",
-    url: "http://localhost:5000/answers/find/" + question.questionId,
+    url: `${process.env.REACT_APP_BACKEND_URL}/find/${question.questionId}`,
     headers: {
       Authorization,
       "Content-Type": "application/json",

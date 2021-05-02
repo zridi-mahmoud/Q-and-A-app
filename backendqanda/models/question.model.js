@@ -1,11 +1,18 @@
 const mongoose = require('mongoose');
 const mongoosastic = require('mongoosastic');
+require('dotenv').config();
+
 
 const QuestionsSchema = new mongoose.Schema({
     title: { type: String, es_indexed: true },
     content: { type: String, es_indexed: true },
     userId: String,
-    geo_with_lat_lon: {
+    geo_location: {
+        geo_point: {
+            es_indexed: true,
+            type: String,
+            es_type: 'geo_point',
+        },
         lat: { type: Number },
         lon: { type: Number }
     },
@@ -13,10 +20,9 @@ const QuestionsSchema = new mongoose.Schema({
 });
 
 QuestionsSchema.plugin(mongoosastic, {
-    "host": "localhost",
-    "port": 9200
+    "host": process.env.ELASTIC_HOST,
+    "port": process.env.ELASTIC_PORT
 })
-
 
 
 

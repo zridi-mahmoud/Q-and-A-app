@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 jwt = require('jsonwebtoken');
 bcrypt = require('bcrypt');
 const User = require('../models/user.model.js');
-const key = require('../config/jwt.config.js');
+require('dotenv').config();
+
 
 exports.register = function(req, res) {
     const newUser = new User(req.body.user);
@@ -12,7 +13,7 @@ exports.register = function(req, res) {
             data.password = undefined;
             return (
                 res.json({
-                    token: jwt.sign({ email: data.email, firstName: data.firstName, _id: data._id }, key.TOKEN_SECRET),
+                    token: jwt.sign({ email: data.email, firstName: data.firstName, _id: data._id }, process.env.SECRET_KEY),
                     data
                 })
             )
@@ -33,7 +34,7 @@ exports.sign_in = function(req, res) {
             if (bcrypt.compareSync(newUser.password, data.password)) {
                 return (
                     res.json({
-                        token: jwt.sign({ email: data.email, firstName: data.firstName, _id: data._id }, key.TOKEN_SECRET, { expiresIn: 1500 }),
+                        token: jwt.sign({ email: data.email, firstName: data.firstName, _id: data._id }, process.env.SECRET_KEY, { expiresIn: 1500 }),
                         data
                     })
                 )

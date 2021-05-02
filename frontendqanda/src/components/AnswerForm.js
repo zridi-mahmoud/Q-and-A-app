@@ -31,7 +31,7 @@ const AnswerForm = ({ questionId, userId }) => {
 
     var config = {
       method: "post",
-      url: "http://localhost:5000/answers",
+      url: `${process.env.REACT_APP_BACKEND_URL}/answers`,
       headers: {
         Authorization,
         "Content-Type": "application/json",

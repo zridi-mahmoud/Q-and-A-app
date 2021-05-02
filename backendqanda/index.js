@@ -1,10 +1,8 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const dbConfig = require('./config/database.config.js');
-const nodePort = require('./config/nodeServer.config.js');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 
 
@@ -16,7 +14,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // parse requests of content-type - application/json
-app.use(bodyParser.json())
+app.use(express.json())
 
 //allow cors
 app.use(cors());
@@ -25,8 +23,9 @@ app.use(cors());
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
-mongoose.connect(dbConfig.url, {
-    useNewUrlParser: true
+mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 }).then(() => {
     console.log("Successfully connected to the database");
 }).catch(err => {
@@ -42,6 +41,6 @@ require('./routes/answer.routes.js')(app);
 require('./routes/user.routes.js')(app);
 
 
-app.listen(nodePort.port, () => {
-    console.log("Server is listening on port 5000");
+app.listen(process.env.PORT, process.env.HOST, () => {
+    console.log("Server is listening on port" + process.env.PORT);
 });

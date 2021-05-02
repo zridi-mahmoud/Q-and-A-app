@@ -39,7 +39,7 @@ const Home = (props) => {
 
     var config = {
       method: "post",
-      url: "http://localhost:5000/questions",
+      url: `${process.env.REACT_APP_BACKEND_URL}/questions`,
       headers: {
         Authorization,
         "Content-Type": "application/json",

@@ -1,5 +1,4 @@
-const User = require('../models/user.model.js');
-const key = require('../config/jwt.config.js');
+require('dotenv').config();
 
 exports.check = function(req, res, next) {
 
@@ -7,7 +6,7 @@ exports.check = function(req, res, next) {
     if (authHeader) {
         const token = authHeader.split(' ')[1];
 
-        jwt.verify(token, key.TOKEN_SECRET, (err, user) => {
+        jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
             if (err) {
                 return res.sendStatus(403);
             }
