@@ -16,8 +16,7 @@ services:
   backend:
     image: node:14.15.5-alpine3.13
     working_dir: /app
-    command: sh -c "npm start"
-    # command: sh -c "sleep infinity"
+    command: sh -c "npm install && npm start"
     ports:
       - "5000:5000"
     depends_on:
@@ -27,10 +26,10 @@ services:
   frontend:
     image: node:14.15.5-alpine3.13
     working_dir: /app
-    command: sh -c "npm start"
+    command: sh -c "npm install && npm start"
     ports:
       - "3000:3000"
-    # depends_on:
-    #     - backend
+    depends_on:
+      - backend
     volumes:
       - ./frontendqanda:/app
