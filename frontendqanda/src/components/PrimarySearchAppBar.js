@@ -4,7 +4,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -125,16 +124,16 @@ export default function PrimarySearchAppBar() {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <Typography
+          <IconButton
             onClick={() => {
               history.push("/home");
             }}
-            className={classes.title}
-            variant="h6"
-            noWrap
+            color="inherit"
           >
-            Q&A
-          </Typography>
+            <Typography className={classes.title} variant="h6" noWrap>
+              Q&A
+            </Typography>
+          </IconButton>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton

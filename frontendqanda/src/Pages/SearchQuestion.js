@@ -9,6 +9,7 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import DirectionsIcon from "@material-ui/icons/Directions";
+import Loading from "../components/Loading";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,11 +34,14 @@ const useStyles = makeStyles((theme) => ({
 const SearchQuestion = () => {
   const classes = useStyles();
   const Authorization = "Bearer " + JSON.parse(localStorage.getItem("token"));
+  const [loading, setLoading] = useState(true);
 
   const [questions, setQuestions] = useState([]);
   const handleSearch = (e) => {
     setQuestions([]);
-    console.log(e.target.value);
+    if (e.target.value === "") {
+      return;
+    }
     let config = {
       method: "get",
       url: `${process.env.REACT_APP_BACKEND_URL}/questions/search/${e.target.value}`,
@@ -48,10 +52,11 @@ const SearchQuestion = () => {
 
     axios(config)
       .then((response) => {
-        // console.log(response.data);
+        setLoading(false);
         setQuestions(response.data);
       })
       .catch((error) => {
+        setLoading(false);
         console.log(error);
       });
   };
@@ -85,7 +90,7 @@ const SearchQuestion = () => {
           </Paper>
         </Grid>
       </Grid>
-      <Post type="Result" data={questions} />
+      {loading ? <Loading /> : <Post type="Result" data={questions} />}
     </div>
   );
 };

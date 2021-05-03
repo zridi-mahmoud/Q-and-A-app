@@ -3,15 +3,14 @@ import Answers from "../components/Answers";
 import axios from "axios";
 import { Paper } from "@material-ui/core";
 import PrimarySearchAppBar from "../components/PrimarySearchAppBar";
-import { useHistory } from "react-router-dom";
+import Loading from "../components/Loading";
 
 const AnswersContainer = () => {
-  const history = useHistory();
   const question = JSON.parse(localStorage.getItem("question"));
   const Authorization = "Bearer " + JSON.parse(localStorage.getItem("token"));
 
   const [loading, setLoading] = useState(true);
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState([]);
   var config = {
     method: "get",
     url: `${process.env.REACT_APP_BACKEND_URL}/find/${question.questionId}`,
@@ -23,14 +22,11 @@ const AnswersContainer = () => {
   useEffect(() => {
     axios(config)
       .then(function (response) {
-        setAnswers(response.data);
         setLoading(false);
+        setAnswers(response.data);
       })
       .catch(function (error) {
-        if (error.response.status === 403) {
-          history.push("/forbiden");
-          setLoading(false);
-        }
+        setLoading(false);
         console.log(error);
       });
   }, []);
@@ -42,7 +38,7 @@ const AnswersContainer = () => {
         <h2>Answers of "{question.title}"</h2>
         <Paper style={{ padding: "40px 20px" }}>
           {loading ? (
-            <h1>Loading ...</h1>
+            <Loading />
           ) : answers.length === 0 ? (
             <h1>No Answers available for this question</h1>
           ) : (

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Post from "../components/Post";
 import PrimarySearchAppBar from "../components/PrimarySearchAppBar";
+import Loading from "../components/Loading";
 
 const Questions = () => {
   const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const userId = JSON.parse(localStorage.getItem("user"))._id;
     const Authorization = "Bearer " + JSON.parse(localStorage.getItem("token"));
@@ -19,16 +21,18 @@ const Questions = () => {
 
     axios(config)
       .then(function (response) {
+        setLoading(false);
         setQuestions(response.data);
       })
       .catch(function (error) {
+        setLoading(false);
         console.log(error);
       });
   }, []);
   return (
     <div>
       <PrimarySearchAppBar />
-      <Post type="Questions" data={questions} />
+      {loading ? <Loading /> : <Post type="Questions" data={questions} />}
     </div>
   );
 };
