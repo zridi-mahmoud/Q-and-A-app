@@ -6,7 +6,10 @@
 
 Create a .env file in backendqand and frontendqanda directories based on the .env.example
 for the mapbox api you can use mine.
+
+```
 REACT_APP_MAPBOX_TOKEN=pk.eyJ1Ijoiem1haG1vdWQiLCJhIjoiY2tvMDV6b25pMDd2eTJubm53bHFtZ2F3YyJ9.cBGdL-qpH6jng8iQuBOuWg
+```
 
 ## 2:
 
