@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Answers from "../components/Answers";
 import axios from "axios";
-import { Paper } from "@material-ui/core";
+import { Grid, Paper } from "@material-ui/core";
 import PrimarySearchAppBar from "../components/PrimarySearchAppBar";
 import Loading from "../components/Loading";
 
@@ -38,7 +38,11 @@ const AnswersContainer = () => {
         <h2>Answers of "{question.title}"</h2>
         <Paper style={{ padding: "40px 20px" }}>
           {loading ? (
-            <Loading />
+            <Grid container justify="center">
+              <Grid item xs={8} md={6}>
+                <Loading />
+              </Grid>
+            </Grid>
           ) : answers.length === 0 ? (
             <h1>No Answers available for this question</h1>
           ) : (

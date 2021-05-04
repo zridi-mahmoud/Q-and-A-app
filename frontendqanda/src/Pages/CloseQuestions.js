@@ -5,15 +5,16 @@ import PrimarySearchAppBar from "../components/PrimarySearchAppBar";
 import Loading from "../components/Loading";
 import { Grid } from "@material-ui/core";
 
-const Questions = () => {
+const CloseQuestions = () => {
   const [questions, setQuestions] = useState([]);
+  const [location, setLocation] = useState([-7.589843, 33.573109]);
+  const Authorization = "Bearer " + JSON.parse(localStorage.getItem("token"));
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const userId = JSON.parse(localStorage.getItem("user"))._id;
-    const Authorization = "Bearer " + JSON.parse(localStorage.getItem("token"));
     var config = {
       method: "get",
-      url: `${process.env.REACT_APP_BACKEND_URL}/questions/user/${userId}`,
+      url: `${process.env.REACT_APP_BACKEND_URL}/questions/close/${location[0]}/${location[1]}`,
       headers: {
         Authorization,
         "Content-Type": "application/json",
@@ -46,4 +47,4 @@ const Questions = () => {
   );
 };
 
-export default Questions;
+export default CloseQuestions;
