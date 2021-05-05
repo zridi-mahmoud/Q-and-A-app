@@ -9,7 +9,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import { useHistory } from "react-router-dom";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -162,11 +161,6 @@ export default function PrimarySearchAppBar() {
             >
               <Badge color="secondary">
                 <QuestionAnswerIcon />
-              </Badge>
-            </IconButton>
-            <IconButton color="inherit">
-              <Badge color="secondary">
-                <LocationOnIcon />
               </Badge>
             </IconButton>
             <IconButton

@@ -10,13 +10,13 @@ import IconButton from "@material-ui/core/IconButton";
 import Loading from "../components/Loading";
 import Modal from "@material-ui/core/Modal";
 import Map from "../components/Map";
+import Pagination from "@material-ui/lab/Pagination";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: "2px 4px",
     display: "flex",
     alignItems: "center",
-    width: 400,
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -51,11 +51,26 @@ function getModalStyle() {
 }
 
 const SearchQuestion = () => {
-  const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
+  const [modalStyle] = useState(getModalStyle);
+  const [open, setOpen] = useState(false);
   const classes = useStyles();
   const Authorization = "Bearer " + JSON.parse(localStorage.getItem("token"));
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [total, setTotal] = useState(0);
+  const rowPerPage = 3;
+  const [page, setPage] = React.useState(1);
+  const [searchType, setSearchType] = useState("");
+  const [term, setTerm] = useState("");
+
+  const handleChange = (event, value) => {
+    setPage(value);
+    if (searchType === "location") {
+      handleSearchLoc();
+    }
+    if (searchType === "term") {
+      handleSearchTerm();
+    }
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -68,10 +83,14 @@ const SearchQuestion = () => {
   const [location, setLocation] = useState([0, 0]);
 
   const handleSearchLoc = (e) => {
+    setSearchType("location");
+    setLoading(true);
     setQuestions([]);
     let config = {
       method: "get",
-      url: `${process.env.REACT_APP_BACKEND_URL}/questions/search/loc/${location[0]}/${location[1]}/0/5`,
+      url: `${process.env.REACT_APP_BACKEND_URL}/questions/search/loc/${
+        location[0]
+      }/${location[1]}/${(page - 1) * rowPerPage}/${rowPerPage}`,
       headers: {
         Authorization,
       },
@@ -80,7 +99,8 @@ const SearchQuestion = () => {
     axios(config)
       .then((response) => {
         setLoading(false);
-        setQuestions(response.data);
+        setQuestions(response.data.data);
+        setTotal(response.data.total);
       })
       .catch((error) => {
         setLoading(false);
@@ -92,12 +112,18 @@ const SearchQuestion = () => {
   const [questions, setQuestions] = useState([]);
   const handleSearchTerm = (e) => {
     setQuestions([]);
-    if (e.target.value === "") {
+    setSearchType("term");
+    if (e) {
+      setTerm(e.target.value);
+    }
+    if (term === "") {
       return;
     }
     let config = {
       method: "get",
-      url: `${process.env.REACT_APP_BACKEND_URL}/questions/search/term/${e.target.value}`,
+      url: `${
+        process.env.REACT_APP_BACKEND_URL
+      }/questions/search/term/${term}/${(page - 1) * rowPerPage}/${rowPerPage}`,
       headers: {
         Authorization,
       },
@@ -106,7 +132,8 @@ const SearchQuestion = () => {
     axios(config)
       .then((response) => {
         setLoading(false);
-        setQuestions(response.data);
+        setQuestions(response.data.data);
+        setTotal(response.data.total);
       })
       .catch((error) => {
         setLoading(false);
@@ -154,6 +181,22 @@ const SearchQuestion = () => {
         </Grid>
       </Grid>
       {loading ? <Loading /> : <Post type="Result" data={questions} />}
+      <Grid container justify="center">
+        <Grid item xs={8} md={6}>
+          {total > rowPerPage ? (
+            <div className={classes.root}>
+              <Pagination
+                count={Math.round(total / rowPerPage)}
+                color="primary"
+                page={page}
+                onChange={handleChange}
+              />
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </Grid>
+      </Grid>
     </div>
   );
 };

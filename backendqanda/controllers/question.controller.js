@@ -166,7 +166,9 @@ exports.searchTerm = (req, res) => {
             from: req.params.start,
             size: req.params.size,
         }, (err, results) => {
-            if (err) return next(err);
+            if (err) {
+                console.log(err);
+            }
             var data = { msg: "no data" }
             if (results.hits.hits) {
 
@@ -179,7 +181,10 @@ exports.searchTerm = (req, res) => {
                     })
                 });
             }
-            res.json(data)
+            res.json({
+                data: data,
+                total: results.hits.total
+            })
         })
     }
 }
@@ -218,7 +223,10 @@ exports.searchClose = (req, res) => {
                 })
             });
         }
-        res.json(data)
+        res.json({
+            data: data,
+            total: results.hits.total
+        })
     })
 
 }
