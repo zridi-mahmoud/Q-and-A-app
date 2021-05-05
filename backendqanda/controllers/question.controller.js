@@ -214,7 +214,6 @@ exports.searchClose = (req, res) => {
         if (results.hits.hits) {
 
             data = results.hits.hits.map((hit) => {
-                console.log(hit)
                 return ({
                     _id: hit._id,
                     title: hit._source.title,

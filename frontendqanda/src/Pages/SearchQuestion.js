@@ -56,13 +56,15 @@ const SearchQuestion = () => {
   const classes = useStyles();
   const Authorization = "Bearer " + JSON.parse(localStorage.getItem("token"));
   const [loading, setLoading] = useState(false);
-  const [total, setTotal] = useState(0);
+  const total = useRef(0);
   const rowPerPage = 3;
   const [page, setPage] = React.useState(1);
   const [searchType, setSearchType] = useState("");
   const [term, setTerm] = useState("");
+  const pageref = useRef(0);
 
   const handleChange = (event, value) => {
+    pageref.current = (value - 1) * rowPerPage;
     setPage(value);
     if (searchType === "location") {
       handleSearchLoc();
@@ -88,9 +90,7 @@ const SearchQuestion = () => {
     setQuestions([]);
     let config = {
       method: "get",
-      url: `${process.env.REACT_APP_BACKEND_URL}/questions/search/loc/${
-        location[0]
-      }/${location[1]}/${(page - 1) * rowPerPage}/${rowPerPage}`,
+      url: `${process.env.REACT_APP_BACKEND_URL}/questions/search/loc/${location[0]}/${location[1]}/${pageref.current}/${rowPerPage}`,
       headers: {
         Authorization,
       },
@@ -100,7 +100,7 @@ const SearchQuestion = () => {
       .then((response) => {
         setLoading(false);
         setQuestions(response.data.data);
-        setTotal(response.data.total);
+        total.current = response.data.total;
       })
       .catch((error) => {
         setLoading(false);
@@ -121,9 +121,7 @@ const SearchQuestion = () => {
     }
     let config = {
       method: "get",
-      url: `${
-        process.env.REACT_APP_BACKEND_URL
-      }/questions/search/term/${term}/${(page - 1) * rowPerPage}/${rowPerPage}`,
+      url: `${process.env.REACT_APP_BACKEND_URL}/questions/search/term/${term}/${pageref.current}/${rowPerPage}`,
       headers: {
         Authorization,
       },
@@ -133,7 +131,7 @@ const SearchQuestion = () => {
       .then((response) => {
         setLoading(false);
         setQuestions(response.data.data);
-        setTotal(response.data.total);
+        total.current = response.data.total;
       })
       .catch((error) => {
         setLoading(false);
@@ -183,18 +181,14 @@ const SearchQuestion = () => {
       {loading ? <Loading /> : <Post type="Result" data={questions} />}
       <Grid container justify="center">
         <Grid item xs={8} md={6}>
-          {total > rowPerPage ? (
-            <div className={classes.root}>
-              <Pagination
-                count={Math.round(total / rowPerPage)}
-                color="primary"
-                page={page}
-                onChange={handleChange}
-              />
-            </div>
-          ) : (
-            <div></div>
-          )}
+          <div className={classes.root}>
+            <Pagination
+              count={total.current / rowPerPage}
+              color="primary"
+              page={page}
+              onChange={handleChange}
+            />
+          </div>
         </Grid>
       </Grid>
     </div>
