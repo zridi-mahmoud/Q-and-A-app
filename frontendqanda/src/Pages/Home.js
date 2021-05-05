@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import PrimarySearchAppBar from "../components/PrimarySearchAppBar";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -23,9 +23,16 @@ const Home = (props) => {
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("user"));
   const [location, setLocation] = useState([0, 0]);
+  const locref = useRef(location);
   const [question, setQuestion] = useState({
     title: "",
     content: "",
+    userId: user._id,
+    location: [33.573109, -7.589843],
+  });
+  const questionref = useRef({
+    title: question.title,
+    content: question.content,
     userId: user._id,
     location: [33.573109, -7.589843],
   });
@@ -33,10 +40,10 @@ const Home = (props) => {
 
   const submit = (e) => {
     e.preventDefault();
-    setQuestion({ ...question, location: location });
-    var data = question;
+    locref.current = location;
+    questionref.current = { ...question, location: locref.current };
+    var data = questionref.current;
     const Authorization = "Bearer " + JSON.parse(localStorage.getItem("token"));
-
     var config = {
       method: "post",
       url: `${process.env.REACT_APP_BACKEND_URL}/questions`,
@@ -46,7 +53,6 @@ const Home = (props) => {
       },
       data: data,
     };
-
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
@@ -54,7 +60,6 @@ const Home = (props) => {
           title: "",
           content: "",
           userId: user._id,
-          location: [33.573109, -7.589843],
         });
         history.push("/questions");
       })

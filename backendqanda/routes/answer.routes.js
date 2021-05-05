@@ -9,7 +9,7 @@ module.exports = (app) => {
     app.get('/answers/find/:questionId', mid.check, answers.findAll);
 
     // Retrieve a single Answer with answerId
-    app.get('/answers/:answerId', mid.check, answers.findOne);
+    app.get('/answers/one/:answerId', mid.check, answers.findOne);
 
     // Delete a Answer with answerId
     app.delete('/answers/:answerId', mid.check, answers.delete);

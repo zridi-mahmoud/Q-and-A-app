@@ -28,7 +28,10 @@ exports.create = (req, res) => {
         title: req.body.title || "Untitled Question",
         content: req.body.content,
         userId: req.body.userId,
-        location: req.body.location,
+        geo_location: {
+            lat: req.body.location[0],
+            lon: req.body.location[1]
+        },
         likes: []
     });
 
@@ -158,7 +161,10 @@ exports.delete = (req, res) => {
 exports.searchTerm = (req, res) => {
     if (req.params.term) {
         Question.search({
-            query_string: { query: req.params.term }
+            query_string: { query: `*${req.params.term}*` }
+        }, {
+            from: req.params.start,
+            size: req.params.size,
         }, (err, results) => {
             if (err) return next(err);
             var data = { msg: "no data" }
@@ -173,11 +179,48 @@ exports.searchTerm = (req, res) => {
                     })
                 });
             }
-            console.log(results.hits.hits[0])
-            console.log(data[0])
             res.json(data)
         })
     }
+}
+exports.searchClose = (req, res) => {
+    Question.search({
+        "match_all": {}
+    }, {
+        "sort": [{
+            "_geo_distance": {
+                "geo_location": {
+                    "lat": req.params.lat,
+                    "lon": req.params.lon
+                },
+                "order": "asc",
+                "unit": "km",
+                "mode": "min",
+                "distance_type": "arc",
+            }
+        }],
+        from: req.params.start,
+        size: req.params.size,
+    }, (err, results) => {
+        if (err) {
+            console.log(err);
+        }
+        var data = { msg: "no data" }
+        if (results.hits.hits) {
+
+            data = results.hits.hits.map((hit) => {
+                console.log(hit)
+                return ({
+                    _id: hit._id,
+                    title: hit._source.title,
+                    content: hit._source.title,
+                    likes: hit._source.likes
+                })
+            });
+        }
+        res.json(data)
+    })
+
 }
 
 //////////////////////////////////////////////
@@ -189,17 +232,17 @@ Question.createMapping((err, mapping) => {
     console.log(mapping)
 })
 
-var stream = Question.synchronize();
-var count = 0;
-stream.on('data', (res) => {
-    count++;
-})
-stream.on('close', () => {
-    console.log(count + " document indexed")
-})
-stream.on('error', (error) => {
-    console.log(error)
-})
+// var stream = Question.synchronize();
+// var count = 0;
+// stream.on('data', (res) => {
+//     count++;
+// })
+// stream.on('close', () => {
+//     console.log(count + " document indexed")
+// })
+// stream.on('error', (error) => {
+//     console.log(error)
+// })
 
 
 // Question.search({

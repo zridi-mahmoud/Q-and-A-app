@@ -26,12 +26,6 @@ const Map = ({ loc }) => {
 
   return (
     <div style={{ margin: "0 auto", padding: "5px" }}>
-      <h1
-        style={{ textAlign: "center", fontSize: "25px", fontWeight: "bolder" }}
-      >
-        GeoLocator: Click the Geolocator to Find Your Location
-      </h1>
-
       <MapGL
         {...viewport}
         mapboxApiAccessToken={TOKEN}

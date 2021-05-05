@@ -24,5 +24,8 @@ module.exports = (app) => {
     app.delete('/questions/:questionId', mid.check, questions.delete);
 
     //  Search by term
-    app.get('/questions/search/:term', questions.searchTerm)
+    app.get('/questions/search/term/:term', questions.searchTerm)
+
+    //  Search by location
+    app.get('/questions/search/loc/:lat/:lon/:start/:size', questions.searchClose)
 }
